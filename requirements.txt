@@ -1,0 +1,7 @@
+"""
+Requirements for user_display system.
+"""
+
+# Core dependencies
+pytest==7.4.3
+pytest-cov==4.1.0
