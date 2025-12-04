@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+import os
+import subprocess
+import sys
+
+root = os.path.dirname(os.path.abspath(__file__))
+venv = os.path.join(root, ".venv")
+
+if not os.path.exists(venv):
+    subprocess.check_call([sys.executable, "-m", "venv", venv])
+
+activate = os.path.join(venv, "Scripts", "activate_this.py")
+with open(activate) as f:
+    code = compile(f.read(), activate, 'exec')
+    exec(code, {'__file__': activate})
+
+subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", os.path.join(root, "requirements.txt")])
+
+args = [sys.executable, "-m", "pytest", "-q"]
+if os.environ.get("PERFORMANCE"):
+    os.environ["RUN_PERF_TESTS"] = "1"
+    args.extend(["-m", "performance"])
+
+sys.exit(subprocess.call(args))
