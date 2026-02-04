@@ -1,0 +1,6 @@
+#!/bin/sh
+python -m pip install -r requirements.txt
+pytest -q
+if [ "$RUN_PERF" = "1" ]; then
+  pytest tests/test_performance.py -q
+fi
